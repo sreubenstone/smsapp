@@ -1,0 +1,25 @@
+{
+  "name": "pickuppen",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1", 
+    "dev": "ts-node index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/Collaborizm/pickuppen.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/Collaborizm/pickuppen#readme",
+  "devDependencies": {
+    "ts-node": "^7.0.1",
+    "typescript": "^3.0.1"
+  },
+  "dependencies": {
+    "@types/node": "^10.7.1"
+  }
+}
