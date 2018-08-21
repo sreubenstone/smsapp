@@ -2,10 +2,10 @@
   "name": "pickuppen",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1", 
-    "dev": "ts-node index.ts"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "ts-node server.ts"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,8 @@
     "typescript": "^3.0.1"
   },
   "dependencies": {
-    "@types/node": "^10.7.1"
+    "@types/node": "^10.7.1",
+    "@types/twilio": "0.0.9",
+    "twilio": "^3.19.1"
   }
 }
