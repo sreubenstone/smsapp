@@ -21,7 +21,6 @@
   },
   "dependencies": {
     "@types/node": "^10.7.1",
-    "@types/twilio": "0.0.9",
     "twilio": "^3.19.1"
   }
 }
