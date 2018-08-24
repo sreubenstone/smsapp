@@ -83,11 +83,15 @@ app.post('/sms', async (req, res) => {
 
       const client = new Client();
       await client.connect();
-      let sql = 'UPDATE users SET getrequests = getrequests + 1 where phoneid = $1';
+      let sql = 'INSERT INTO users (phoneid) VALUES ($1) ON CONFLICT (phoneid) DO NOTHING';
       let params = [req.body.From];
       let result = await client.query(sql, params);
 
-      sql = 'SELECT * FROM words ORDER BY random() LIMIT 1';
+      sql = 'UPDATE users SET getrequests = getrequests + 1 where phoneid = $1';
+      params = [req.body.From];
+      result = await client.query(sql, params);
+
+      sql = 'SELECT * FROM messages ORDER BY random() LIMIT 1';
       params = null;
       result = await client.query(sql, params)
 

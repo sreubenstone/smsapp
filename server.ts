@@ -26,7 +26,6 @@ app.post('/sms', async (req, res) => {
   result = await client.query(sql, params);
   console.log('Inserted', result);
 
-  
 
 
   /* Twilio Responds to user */
