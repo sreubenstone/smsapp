@@ -6,6 +6,7 @@ var bodyParser = require('body-parser');
 const { Client } = require('pg');
 require('dotenv').config();
 const app = express();
+import squel = require('squel');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -65,7 +66,7 @@ app.post('/sms', async (req, res) => {
 
       const client = new Client();
       await client.connect();
-      let sql = 'UPDATE users SET getrequests = getrequests + 1 where phoneid = $1';
+      let sql = 'INSERT INTO users (phoneid) VALUES ($1) ON CONFLICT (phoneid) DO NOTHING';
       let params = [req.body.From];
       let result = await client.query(sql, params);
 
@@ -86,7 +87,16 @@ app.post('/sms', async (req, res) => {
       let params = [req.body.From];
       let result = await client.query(sql, params);
 
+      sql = 'SELECT * FROM words ORDER BY random() LIMIT 1';
+      params = null;
+      result = await client.query(sql, params)
 
+    
+      const twiml = new MessagingResponse();
+      twiml.message(result);
+      res.writeHead(200, {'Content-Type': 'text/xml'});
+      res.end(twiml.toString());
+            
 
 
       case 3:  /* ERROR -- Invalid Command */
@@ -99,47 +109,9 @@ app.post('/sms', async (req, res) => {
       }
 
 
-
-
-
-    
-
-    
-        
-        
-
-       
-      
-
-    } else if {
-
-        const client = new Client();
-        await client.connect();
-        let sql = 'INSERT INTO users (phoneid) VALUES ($1) ON CONFLICT (phoneid) DO NOTHING';
-        let params = [req.body.From];
-        let result = await client.query(sql, params);
-        console.log('Inserted', result);
-      
-        sql = 'INSERT INTO messages (userid, message) VALUES ($1, $2)';
-        params = [req.body.From, req.body.Body];
-        result = await client.query(sql, params);
-        console.log('Inserted', result);
     }
 
-
-
-  
-  
-
-
-  /* Twilio Responds to user */
-  const twiml = new MessagingResponse();
-  twiml.message('Thank you for messaging The Pick Up Pen Network. Submit your game.');
-  res.writeHead(200, {'Content-Type': 'text/xml'});
-  res.end(twiml.toString());
 });
-
-
 
 
 http.createServer(app).listen(process.env.PORT, () => {
