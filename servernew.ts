@@ -9,58 +9,92 @@ const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
-
 app.post('/sms', async (req, res) => {
   console.log('post body', req.body);
 
-  var command = 0;
+    var signup = req.body.Body;
+    var isSignup = submit.includes("signup");
 
-  if (req.body.Body = 'signup') {
-    command = 0;
+    var get = req.body.Body;
+    var isGet = submit.includes("get");
 
-  } else if (req.body.Body = 'get') {
-    var command = 1;
-    } else if (req.body.Body = 'submit') {
-        var command = 2;
+    var submit = req.body.Body;
+    var isSubmit = submit.includes("submit");
+
+    var command = 0;
+
+        if (isSignup) {
+              command = 0;
+
+        } else if (isGet) {
+              command = 1;
+
+        } else if (isSubmit) {
+               command = 2;
+        }
+        else
+        
+            command = 3;
     }
-    else
 
-        var command = 3;
-    }
 
   switch (command) {
-      case 0:
+      case 0: /* SIGN UP*/
+
+          const twiml = new MessagingResponse();
+          twiml.message('You now have an account with The Pick Up Network, congratulations.');
+          res.writeHead(200, {'Content-Type': 'text/xml'});
+          res.end(twiml.toString());
+
+          const client = new Client();
+          await client.connect();
+          let sql = 'INSERT INTO users (phoneid) VALUES ($1) ON CONFLICT (phoneid) DO NOTHING';
+          let params = [req.body.From];
+          let result = await client.query(sql, params);
+          console.log('Inserted', result);
+    
+        break;
+
+
+     case 1:  /* SUBMIT*/
 
       const twiml = new MessagingResponse();
-      twiml.message(/*RANDOM MESSAGE PLUCKED FROM DB*/);
+      twiml.message('You have succesfully inserted your pick up line to the network.');
       res.writeHead(200, {'Content-Type': 'text/xml'});
       res.end(twiml.toString());
 
-    const client = new Client();
-    await client.connect();
-    let sql = 'UPDATE users SET getrequests = getrequests + 1 where phoneid = $1';
-    let params = [req.body.From];
-    let result = await client.query(sql, params);
-    console.log('Inserted', result);
+      const client = new Client();
+      await client.connect();
+      let sql = 'UPDATE users SET getrequests = getrequests + 1 where phoneid = $1';
+      let params = [req.body.From];
+      let result = await client.query(sql, params);
+
+      sql = 'INSERT INTO messages (userid, message) VALUES ($1, $2)';
+      params = [req.body.From, req.body.Body];
+      result = await client.query(sql, params);
+      console.log('Inserted', result);
+      console.log('Inserted', result);
+
+        break;
 
 
-            /* What happens if a user has not signed up? -- right now thing..they'd get the
-             message but not be stored -- how do we check?.. can query for that id...need a true or false return value 
-             if its true we go through with the code if its false...twilio sends an error message
-             
-             */
+      case 2:/* GET*/
 
-    
-
-      break;
-
-      case 1:
-
-      case 2:
-
-      case 3: 
+      const client = new Client();
+      await client.connect();
+      let sql = 'UPDATE users SET getrequests = getrequests + 1 where phoneid = $1';
+      let params = [req.body.From];
+      let result = await client.query(sql, params);
 
 
+
+
+      case 3:  /* ERROR -- Invalid Command */
+
+      const twiml = new MessagingResponse();
+      twiml.message('You have inserted an invalid command. Please "SIGNUP", "GET, or "SUBMIT" to make your command valid.');
+      res.writeHead(200, {'Content-Type': 'text/xml'});
+      res.end(twiml.toString());
 
       }
 
@@ -70,9 +104,7 @@ app.post('/sms', async (req, res) => {
 
     
 
-        /* Respond to a user asking for a random pick up line */
-
-        /* Twilio Responds to user */
+    
         
         
 
