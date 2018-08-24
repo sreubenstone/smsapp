@@ -15,7 +15,7 @@ app.post('/sms', async (req, res) => {
 
   const client = new Client();
   await client.connect();
-  let sql = 'INSERT INTO users (phoneid) VALUES ($1)';
+  let sql = 'INSERT INTO users (phoneid) VALUES ($1) ON CONFLICT (phoneid) DO NOTHING';
   let params = [req.body.From];
   let result = await client.query(sql, params);
   console.log('Inserted', result);
@@ -39,6 +39,9 @@ app.post('/sms', async (req, res) => {
 http.createServer(app).listen(process.env.PORT, () => {
   console.log(`Listening on port ${process.env.PORT}.`);
 });
+
+
+
 
 
 
