@@ -43,7 +43,7 @@ app.post('/sms', async (req, res) => {
       case 0: /* SIGN UP*/
 
           const twiml = new MessagingResponse();
-          twiml.message('You now have an account with The Pick Up Network, congratulations.');
+          twiml.message('You now have an account with The Network, congratulations.');
           res.writeHead(200, {'Content-Type': 'text/xml'});
           res.end(twiml.toString());
 
