@@ -31,7 +31,7 @@ app.post('/sms', async (req, res) => {
   /* Twilio Responds to user */
   const twiml = new MessagingResponse();
 
-  twiml.message('Thank you for messaging The Pick Up Pen Network. Submit your game. ');
+  twiml.message('Thank you for messaging us. ');
 
   res.writeHead(200, {'Content-Type': 'text/xml'});
   res.end(twiml.toString());

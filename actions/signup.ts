@@ -5,7 +5,7 @@ const { Client } = require('pg');
 export default class SubmitAction{
 	async handleSubmitAction(req: express.Request, res: express.Response){
           const twiml = new MessagingResponse();
-          twiml.message('You now have an account with The Network, congratulations.');
+          twiml.message('You now have an account with The Pick Up Network, congratulations bro.');
           res.writeHead(200, {'Content-Type': 'text/xml'});
           res.end(twiml.toString());
 

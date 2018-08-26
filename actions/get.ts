@@ -17,9 +17,14 @@ export default class GetAction{
 
             sql = 'SELECT * FROM messages ORDER BY random() LIMIT 1';
             result = await client.query(sql, null);
+            console.log(result);
           
             const twiml = new MessagingResponse();
-            twiml.message(result);
+            if(result.rows.length == 1)
+                twiml.message(result.rows[0].message);
+            else 
+                twiml.message('');
+                
             res.writeHead(200, {'Content-Type': 'text/xml'});
             res.end(twiml.toString());
 	}
